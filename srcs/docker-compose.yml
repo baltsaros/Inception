@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+        context: .
+        dockerfile: ./requirements/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./requirements/nginx/conf:/etc/nginx/http.d
+      - ./requirements/nginx/public/html:/var/www
+      - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
+    restart:
+      always
+    networks:
+     - my-net
+
+networks:
+  my-net:
+    driver: bridge
