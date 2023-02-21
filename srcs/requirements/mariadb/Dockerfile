@@ -5,6 +5,6 @@ RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
 		mysql_install_db --user=mysql --datadir=/var/lib/mysql
 #ENV MYSQL_ROOT_PASSWORD 123
 #ENV MYSQL_DATABASE 123db
-COPY my.cnf /etc/mysql/my.cnf
+COPY ./requirements/mariadb/my.cnf /etc/mysql/my.cnf
 EXPOSE 3306
 CMD ["mysqld", "--user=mysql", "--console"]
