@@ -24,13 +24,11 @@ services:
       dockerfile: ./requirements/mariadb/Dockerfile
     container_name: mariadb
     env_file: .env
-    environment:
-      - MYSQL_DATABASE=wordpress
-      - MYSQL_USER=$MYSQL_USER
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD
     ports:
       - "3306:3306"
     restart: always
+    volumes:
+      - ./requirements/mariadb/conf:/docker-entrypoint-initdb.d
     networks:
       - my-net
 
@@ -43,11 +41,6 @@ services:
     container_name: wordpress
     restart: always
     env_file: .env
-    environment:
-      - WORDPRESS_DB_HOST=mariadb:3306
-      - WORDPRESS_DB_USER=$MYSQL_USER
-      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=wordpress
     networks:
       - my-net
 

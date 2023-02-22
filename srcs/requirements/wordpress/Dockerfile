@@ -17,3 +17,4 @@ WORKDIR /var/www
 RUN wget http://wordpress.org/latest.tar.gz; \
 	tar -xzvf latest.tar.gz; \
 	rm latest.tar.gz
+CMD ["/usr/sbin/php-fpm81", "-F"]
