@@ -16,8 +16,10 @@ RUN apk update && apk upgrade && apk add --no-cache \
 	php8.2-xml \
 	php8.2-zip \
 	php8.2-opcache \
-	wget \
-	unzip
-
+	wget
+WORKDIR /var/www
+RUN wget http://wordpress.org/latest.tar.gz; \
+	tar -xzvf latest.tar.gz; \
+	rm latest.tar.gz; \
 EXPOSE 9000
 	
