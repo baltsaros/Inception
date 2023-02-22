@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./requirements/nginx/Dockerfile
+    depends_on:
+      - wordpress
     container_name: nginx
     ports:
       - "443:443"
@@ -12,8 +14,7 @@ services:
       - ./requirements/nginx/conf:/etc/nginx/http.d
       - ./requirements/nginx/public/html:/var/www
       - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
-    restart:
-      always
+    restart: always
     networks:
      - my-net
   
@@ -22,10 +23,30 @@ services:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
     container_name: mariadb
+    env_file: .env
+    environment:
+      - MYSQL_DATABASE=wordpress
+    command: '--default-authentification-pluging=mysql_native_password'
     ports:
       - "3306:3306"
-    restart:
-      always
+    restart: always
+    networks:
+      - my-net
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: ./requirements/wordpress/Dockerfile
+    depends_on:
+      - mariadb
+    container_name: wordpress
+    restart: always
+    env_file: .env
+    environment:
+      - WORDPRESS_DB_HOST=mariadb:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=wordpress
     networks:
       - my-net
 
