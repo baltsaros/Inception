@@ -1,25 +1,19 @@
 FROM alpine:3.17
-RUN apk update && apk upgrade && apk add --no-cache \
-	php8.2 \
-	php8.2-fpm \
-	php8.2-json \
-	php8.2-mysqli \
-	php8.2-curl \
-	php8.2-dom \
-	php8.2-exif \
-	php8.2-fileinfo \
-	php8.2-hash \
-	php8.2-imagick \
-	php8.2-mbstring \
-	php8.2-openssl \
-	php8.2-pcre \
-	php8.2-xml \
-	php8.2-zip \
-	php8.2-opcache \
+RUN apk update && apk upgrade && apk add --no-cache php \
+	php-fpm \
+	php-json \
+	php-mysqli \
+	php-curl \
+	php-dom \
+	php-exif \
+	php-fileinfo \
+	php-mbstring \
+	php-openssl \
+	php-xml \
+	php-zip \
+	php-opcache \
 	wget
 WORKDIR /var/www
 RUN wget http://wordpress.org/latest.tar.gz; \
 	tar -xzvf latest.tar.gz; \
-	rm latest.tar.gz; \
-EXPOSE 9000
-	
+	rm latest.tar.gz
