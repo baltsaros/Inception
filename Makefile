@@ -17,7 +17,7 @@ all:	build
 	#@touch srcs/requirements/mariadb/.dockerignore
 
 build:
-	docker-compose -f ./srcs/docker-compose.yml up -d --build
+	docker-compose -f ./srcs/docker-compose.yml --env-file=./srcs/.env up -d --build 
 
 stop:
 	docker-compose -f ./srcs/docker-compose.yml stop
@@ -28,5 +28,8 @@ down:
 clean: down
 	docker system prune
 
-fclean: clean
+fclean: stop clean
 	docker system prune -a -f
+	docker volume prune -f
+	@sudo rm -rf ~/data/wordpress/*
+	@sudo rm -rf ~/data/mariadb/*

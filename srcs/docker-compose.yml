@@ -5,18 +5,18 @@ services:
     build:
       context: .
       dockerfile: ./requirements/nginx/Dockerfile
+    container_name: nginx
     depends_on:
       - wordpress
-    container_name: nginx
     ports:
       - "443:443"
-    volumes:
-      - ./requirements/nginx/conf:/etc/nginx/http.d
-      - ./requirements/nginx/public/html:/var/www
-      - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
-    restart: always
     networks:
      - my-net
+    volumes:
+      - ./requirements/nginx/conf/nginx.conf:/etc/nginx/http.d/nginx.conf
+      - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
+      - wp-volume:/var/www/
+    restart: always
   
   mariadb:
     build:
@@ -26,23 +26,37 @@ services:
     env_file: .env
     ports:
       - "3306:3306"
-    restart: always
-    volumes:
-      - ./requirements/mariadb/conf:/docker-entrypoint-initdb.d
     networks:
       - my-net
+    volumes:
+      - mdb-volume:/var/lib/mysql/
+    restart: always
 
   wordpress:
     build:
       context: .
       dockerfile: ./requirements/wordpress/Dockerfile
+    container_name: wordpress
     depends_on:
       - mariadb
-    container_name: wordpress
-    restart: always
     env_file: .env
     networks:
       - my-net
+    volumes:
+      - wp-volume:/var/www/
+    restart: always
+
+volumes:
+    wp-volume:
+      driver_opts:
+        o: bind
+        type: none
+        device: /home/abuzdin/data/wordpress/
+    mdb-volume:
+      driver_opts:
+        o: bind
+        type: none
+        device: /home/abuzdin/data/mariadb/
 
 networks:
   my-net:

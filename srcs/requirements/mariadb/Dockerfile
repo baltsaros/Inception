@@ -1,12 +1,13 @@
 FROM alpine:3.17
-RUN apk update && apk upgrade && apk add --no-cache mariadb mariadb-client mariadb-server-utils
-RUN mkdir /var/run/mysqld; chmod 777 /var/run/mysqld; \
-		mkdir -p /var/lib/mysql; chown -R mysql:mysql /var/lib/mysql; \
-		mysql_install_db --user=mysql --datadir=/var/lib/mysql
-COPY ./requirements/mariadb/my.cnf /etc/mysql/my.cnf
-#COPY ./requirements/mariadb/conf/create_db.sql /docker-entrypoint-initdb.d
+RUN apk update && apk upgrade && apk add --no-cache mariadb mariadb-client
+RUN mkdir /var/run/mysqld; \
+    	chmod 777 /var/run/mysqld
+COPY requirements/mariadb/conf/my.cnf /etc/my.cnf.d/mariadb-server.cnf
+COPY requirements/mariadb/conf/my.cnf /etc/mysql/my.cnf
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 EXPOSE 3306
-#COPY requirements/mariadb/create_db.sh .
-#RUN sh create_db.sh
-#USER mysql
-CMD ["mysqld", "--user=mysql", "--console"]
+COPY requirements/mariadb/conf/create_db.sql .
+COPY requirements/mariadb/create_db.sh .
+RUN sh create_db.sh; rm -f create_db.sh create_db.sql
+USER mysql
+CMD ["/usr/bin/mysqld", "--skip-log-error"]
