@@ -2,10 +2,10 @@
 if [ ! -f "/var/www/wp-config.php" ]; then
 cat << EOF > /var/www/wp-config.php
 <?php
-define( 'DB_NAME', 'wordpress' );
-define( 'DB_USER', 'abuzdin' );
-define( 'DB_PASSWORD', 'test' );
-define( 'DB_HOST', 'mariadb' );
+define( 'DB_NAME', '${DB_NAME}' );
+define( 'DB_USER', '${DB_USER}' );
+define( 'DB_PASSWORD', '${DB_PASS}' );
+define( 'DB_HOST', '${DB_HOST}' );
 define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 define('FS_METHOD','direct');
