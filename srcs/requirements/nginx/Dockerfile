@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.16
 RUN apk update && apk upgrade && apk add --no-cache nginx openssl
 RUN mkdir /etc/nginx/ssl; openssl req -x509 -newkey rsa:4096 -nodes \
 	-out /etc/nginx/ssl/nginx.crt \
