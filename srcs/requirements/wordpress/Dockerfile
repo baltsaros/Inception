@@ -1,5 +1,5 @@
 FROM alpine:3.17
-ARG DB_NAME DB_HOST DB_USER DB_PASS
+ARG DB_NAME DB_HOST DB_USER DB_UPASS
 RUN apk update && apk upgrade && apk add --no-cache php81 \
 	php81-fpm \
 	php81-json \

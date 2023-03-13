@@ -24,7 +24,8 @@ services:
       args:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
+        DB_UPASS: ${DB_UPASS}
+        DB_RPASS: ${DB_RPASS}
     container_name: mariadb
     ports:
       - "3306:3306"
@@ -42,7 +43,7 @@ services:
         DB_NAME: ${DB_NAME}
         DB_HOST: ${DB_HOST}
         DB_USER: ${DB_USER}
-        DB_PASS: ${DB_PASS}
+        DB_UPASS: ${DB_UPASS}
     container_name: wordpress
     depends_on:
       - mariadb
